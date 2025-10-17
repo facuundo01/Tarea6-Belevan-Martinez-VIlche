@@ -1,48 +1,89 @@
+// ResDeSist.cpp
+// Resolución de sistemas de ecuaciones por el método de Gauss-Jordan (solo enteros)
+
 #include <iostream>
+#include <vector>
+#include <cstdlib>   // para abs()
+#include "matrices.h"
 #include "ResDeSist.h"
 
-const double EPS = 1e-9;
-const int INF = 2; // it doesn't actually have to be infinity or a big number
+using namespace std;
 
-int gauss(vector < vector<double> > a, vector<double>& ans) {
-    int n = (int)a.size();
-    int m = (int)a[0].size() - 1;
+vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
+    int n = A.size();
+    int columnas = n + 1;
 
-    vector<int> where(m, -1);
-    for (int col = 0, row = 0; col < m && row < n; ++col) {
-        int sel = row;
-        for (int i = row; i < n; ++i)
-            if (abs(a[i][col]) > abs(a[sel][col]))
-                sel = i;
-        if (abs(a[sel][col]) < EPS)
-            continue;
-        for (int i = col; i <= m; ++i)
-            swap(a[sel][i], a[row][i]);
-        where[col] = row;
+    // Crear matriz aumentada [A | b]
+    vector<vector<int>> mat(n, vector<int>(columnas));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            mat[i][j] = A[i][j];
+        }
+        mat[i][n] = b[i];
+    }
 
-        for (int i = 0; i < n; ++i)
-            if (i != row) {
-                double c = a[i][col] / a[row][col];
-                for (int j = col; j <= m; ++j)
-                    a[i][j] -= a[row][j] * c;
+    cout << "\n--- Matriz aumentada inicial ---\n";
+    mostrarMatriz(mat, n, columnas);
+
+    // Proceso de Gauss-Jordan
+    for (int i = 0; i < n; i++) {
+        int pivote = mat[i][i];
+
+        // Si el pivote es 0, buscar otra fila para intercambiar
+        if (pivote == 0) {
+            bool intercambio = false;
+            for (int k = i + 1; k < n; k++) {
+                if (mat[k][i] != 0) {
+                    intercambiarFilas(mat, i, k, columnas);
+                    pivote = mat[i][i];
+                    cout << "Intercambio fila " << i + 1 << " con fila " << k + 1 << endl;
+                    mostrarMatriz(mat, n, columnas);
+                    intercambio = true;
+                    break;
+                }
             }
-        ++row;
+            if (!intercambio) {
+                cout << "No se encontró pivote no nulo. El sistema puede no tener solución." << endl;
+                return {};
+            }
+        }
+
+        // Normalizar la fila pivote para hacer que el pivote sea 1 (solo si divisible)
+        if (pivote != 1) {
+            if (mat[i][i] % pivote == 0) {
+                multiplicarFilaPorEscalar(mat, i, 1 / pivote, columnas);
+            }
+            else {
+                cout << "Atención: división entera, puede perder precisión.\n";
+            }
+        }
+
+        cout << "Fila " << i + 1 << " normalizada:" << endl;
+        mostrarMatriz(mat, n, columnas);
+
+        // Hacer ceros en la columna del pivote
+        for (int k = 0; k < n; k++) {
+            if (k != i) {
+                int factor = mat[k][i];
+                if (factor != 0)
+                    restarFilas(mat, i, k, factor, columnas);
+            }
+        }
+
+        cout << "Después de eliminar columna " << i + 1 << ":" << endl;
+        mostrarMatriz(mat, n, columnas);
     }
 
-    ans.assign(m, 0);
-    for (int i = 0; i < m; ++i)
-        if (where[i] != -1)
-            ans[i] = a[where[i]][m] / a[where[i]][i];
-    for (int i = 0; i < n; ++i) {
-        double sum = 0;
-        for (int j = 0; j < m; ++j)
-            sum += ans[j] * a[i][j];
-        if (abs(sum - a[i][m]) > EPS)
-            return 0;
+    // Extraer las soluciones
+    vector<int> soluciones(n);
+    for (int i = 0; i < n; i++) {
+        soluciones[i] = mat[i][n];
     }
 
-    for (int i = 0; i < m; ++i)
-        if (where[i] == -1)
-            return INF;
-    return 1;
+    cout << "--- Soluciones ---" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << "x" << i + 1 << " = " << soluciones[i] << endl;
+    }
+
+    return soluciones;
 }

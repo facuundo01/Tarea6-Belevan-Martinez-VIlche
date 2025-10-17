@@ -3,4 +3,4 @@
 #include <vector>
 using namespace std;
 
-int gauss(vector < vector<double>>a, vector <double>& ans);
+vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b);
