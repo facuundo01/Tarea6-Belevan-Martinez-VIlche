@@ -13,6 +13,9 @@ int main() {
     vector<vector<int>> A(n, vector<int>(n));
     vector<int> b(n);
 
+    ingresarSistema(A, b, n);
+    mostrarMatriz(A, b);
+
     cout << "Cargar matriz de coeficientes:\n";
     cargarMatriz(A, n, n);
 
@@ -23,3 +26,4 @@ int main() {
 
     return 0;
 }
+
