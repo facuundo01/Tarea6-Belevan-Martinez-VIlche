@@ -1,5 +1,5 @@
 // ResDeSist.cpp
-// Resolución de sistemas de ecuaciones por el método de Gauss-Jordan (solo enteros)
+// ResoluciÃ³n de sistemas de ecuaciones por el mÃ©todo de Gauss-Jordan (solo enteros)
 
 #include <iostream>
 #include <vector>
@@ -9,12 +9,12 @@
 
 using namespace std;
 
-vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
+vector<int> resolverPorGaussJordan(vector<vector<double>> A, vector<int> b) {
     int n = A.size();
     int columnas = n + 1;
 
     // Crear matriz aumentada [A | b]
-    vector<vector<int>> mat(n, vector<int>(columnas));
+    vector<vector<double>> mat(n, vector<double>(columnas));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             mat[i][j] = A[i][j];
@@ -43,7 +43,7 @@ vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
                 }
             }
             if (!intercambio) {
-                cout << "No se encontró pivote no nulo. El sistema puede no tener solución." << endl;
+                cout << "No se encontrÃ³ pivote no nulo. El sistema puede no tener soluciÃ³n." << endl;
                 return {};
             }
         }
@@ -54,7 +54,7 @@ vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
                 multiplicarFilaPorEscalar(mat, i, 1 / pivote, columnas);
             }
             else {
-                cout << "Atención: división entera, puede perder precisión.\n";
+                cout << "AtenciÃ³n: divisiÃ³n entera, puede perder precisiÃ³n.\n";
             }
         }
 
@@ -70,12 +70,12 @@ vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
             }
         }
 
-        cout << "Después de eliminar columna " << i + 1 << ":" << endl;
+        cout << "DespuÃ©s de eliminar columna " << i + 1 << ":" << endl;
         mostrarMatriz(mat, n, columnas);
     }
 
     // Extraer las soluciones
-    vector<int> soluciones(n);
+    vector<double> soluciones(n);
     for (int i = 0; i < n; i++) {
         soluciones[i] = mat[i][n];
     }
@@ -87,3 +87,4 @@ vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
 
     return soluciones;
 }
+
