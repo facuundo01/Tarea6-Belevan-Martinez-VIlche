@@ -15,18 +15,6 @@ void ingresarSistema(vector<vector<double>> &matriz, vector<double> &terminos, i
     }
 }
 
-void mostrarMatriz(const vector<vector<double>> &matriz, const vector<double> &terminos) {
-    int n = matriz.size();
-    cout << "\nSistema representado:\n";
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cout << matriz[i][j] << " ";
-        }
-        cout << "| " << terminos[i] << endl;
-    }
-    cout << endl;
-}
-
 void guardarResultados(const vector<double> &soluciones, const string &archivo) {
     ofstream salida(archivo);
     if (!salida) {
@@ -40,3 +28,4 @@ void guardarResultados(const vector<double> &soluciones, const string &archivo) 
     salida.close();
     cout << "Resultados guardados en " << archivo << endl;
 }
+
