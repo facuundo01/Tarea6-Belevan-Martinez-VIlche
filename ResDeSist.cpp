@@ -9,12 +9,12 @@
 
 using namespace std;
 
-vector<int> resolverPorGaussJordan(vector<vector<double>> A, vector<int> b) {
+vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
     int n = A.size();
     int columnas = n + 1;
 
     // Crear matriz aumentada [A | b]
-    vector<vector<double>> mat(n, vector<double>(columnas));
+    vector<vector<int>> mat(n, vector<int>(columnas));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             mat[i][j] = A[i][j];
@@ -75,7 +75,7 @@ vector<int> resolverPorGaussJordan(vector<vector<double>> A, vector<int> b) {
     }
 
     // Extraer las soluciones
-    vector<double> soluciones(n);
+    vector<int> soluciones(n);
     for (int i = 0; i < n; i++) {
         soluciones[i] = mat[i][n];
     }
@@ -87,4 +87,5 @@ vector<int> resolverPorGaussJordan(vector<vector<double>> A, vector<int> b) {
 
     return soluciones;
 }
+
 
