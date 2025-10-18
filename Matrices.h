@@ -1,6 +1,5 @@
 #pragma once
-#ifndef MATRICES_H
-#define MATRICES_H
+
 
 #include <vector>
 #include <iostream>
@@ -17,4 +16,5 @@ double determinanteSarrus(const vector<vector<double>> &matriz);
 double determinanteLaplace(const vector<vector<double>> &matriz); // recursivo
 vector<vector<double>> menorMatriz(const vector<vector<double>> &matriz, int fila, int col);
 
-#endif
+
+
