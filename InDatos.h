@@ -4,6 +4,6 @@
 #include <vector>
 using namespace std;
 
-void guardarResultados(const vector<double> &soluciones, const string &archivo);
+void guardarResultados(const vector<int> &soluciones, const string &archivo);
 
 #endif
