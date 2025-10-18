@@ -10,7 +10,7 @@ int main() {
     cout << "Ingrese cantidad de ecuaciones/incognitas: ";
     cin >> n;
 
-    vector<vector<int>> A(n, vector<int>(n));
+    vector<vector<double>> A(n, vector<double>(n));
     vector<int> b(n);
 
     cout << "Cargar matriz de coeficientes:\n";
@@ -49,6 +49,7 @@ int main() {
 
     return 0;
 }
+
 
 
 
