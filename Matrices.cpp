@@ -36,6 +36,47 @@ void restarFilas(std::vector<std::vector<int>>& mat, int filaPivote, int filaObj
         mat[filaObjetivo][j] -= factor * mat[filaPivote][j];
     }
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+double determinanteSarrus(const vector<vector<double>> &matriz) {
+    if (matriz.size() != 3) return 0; // seguridad
+    double det = 0;
+    det = matriz[0][0]*matriz[1][1]*matriz[2][2] +
+          matriz[0][1]*matriz[1][2]*matriz[2][0] +
+          matriz[0][2]*matriz[1][0]*matriz[2][1] -
+          matriz[0][2]*matriz[1][1]*matriz[2][0] -
+          matriz[0][0]*matriz[1][2]*matriz[2][1] -
+          matriz[0][1]*matriz[1][0]*matriz[2][2];
+    return det;
+}
+
+vector<vector<double>> menorMatriz(const vector<vector<double>> &matriz, int fila, int col) {
+    int n = matriz.size();
+    vector<vector<double>> menor(n-1, vector<double>(n-1));
+    int r = 0, c;
+    for (int i = 0; i < n; i++) {
+        if (i == fila) continue;
+        c = 0;
+        for (int j = 0; j < n; j++) {
+            if (j == col) continue;
+            menor[r][c] = matriz[i][j];
+            c++;
+        }
+        r++;
+    }
+    return menor;
+}
+
+double determinanteLaplace(const vector<vector<double>> &matriz) {
+    int n = matriz.size();
+    if (n == 1) return matriz[0][0];
+    if (n == 2) return matriz[0][0]*matriz[1][1] - matriz[0][1]*matriz[1][0];
+    double det = 0;
+    for (int j = 0; j < n; j++) {
+        vector<vector<double>> menor = menorMatriz(matriz, 0, j);
+        det += ( (j%2==0 ? 1 : -1) * matriz[0][j] * determinanteLaplace(menor) );
+    }
+    return det;
+}
 
 
 
