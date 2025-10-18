@@ -3,7 +3,7 @@
 #include <fstream>
 using namespace std;
 
-void guardarResultados(const vector<double> &soluciones, const string &archivo) {
+void guardarResultados(const vector<int> &soluciones, const string &archivo) {
     ofstream salida(archivo);
     if (!salida) {
         cerr << "Error al abrir el archivo para guardar resultados.\n";
@@ -16,5 +16,6 @@ void guardarResultados(const vector<double> &soluciones, const string &archivo) 
     salida.close();
     cout << "Resultados guardados en " << archivo << endl;
 }
+
 
 
