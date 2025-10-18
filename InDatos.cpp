@@ -1,26 +1,42 @@
+#include "entrada_salida.h"
 #include <iostream>
 #include <fstream>
-
 using namespace std;
 
-void ingresarSistemas(vector<vector<double>> &matriz, vector<double> &terminos, int n){
-  cout << "ingrese los coeficientes de la matriz (" << n << "x" << n << "):\n";
-  for(int i = 0; i < n; i++){
-    for(int j = 0; j < n; j++){
-      cout << "a[" << i+1 << "][" << j+1 << "]= ";
-      cin >> matriz[i][j];
-    }
-    cout << "Termino independiente b[" << i+1 << "]= " << endl;
-    cin >> terminos[i];
+void ingresarSistema(vector<vector<double>> &matriz, vector<double> &terminos, int n) {
+    cout << "Ingrese los coeficientes de la matriz (" << n << "x" << n << "):\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << "a[" << i+1 << "][" << j+1 << "] = ";
+            cin >> matriz[i][j];
+        }
+        cout << "Termino independiente b[" << i+1 << "] = ";
+        cin >> terminos[i];
     }
 }
-void mostrarMatriz(const<vector<double>> &matriz, const vector<double> &terminos){
-  int n = matriz.size();
-  cout << "\nSistema representativo:\n";
-  for(int i=0; i < n; i++){
-    for(int j=0; j < n; j++){
-      cout << matriz[i][j] << " ";
+
+void mostrarMatriz(const vector<vector<double>> &matriz, const vector<double> &terminos) {
+    int n = matriz.size();
+    cout << "\nSistema representado:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << matriz[i][j] << " ";
+        }
+        cout << "| " << terminos[i] << endl;
     }
-    cout << "| " << terminos [i] << endl;
+    cout << endl;
 }
+
+void guardarResultados(const vector<double> &soluciones, const string &archivo) {
+    ofstream salida(archivo);
+    if (!salida) {
+        cerr << "Error al abrir el archivo para guardar resultados.\n";
+        return;
+    }
+    salida << "Soluciones del sistema:\n";
+    for (int i = 0; i < soluciones.size(); i++) {
+        salida << "x" << i+1 << " = " << soluciones[i] << endl;
+    }
+    salida.close();
+    cout << "Resultados guardados en " << archivo << endl;
 }
