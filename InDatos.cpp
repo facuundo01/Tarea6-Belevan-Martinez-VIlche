@@ -1,4 +1,4 @@
-#include "entrada_salida.h"
+#include "InDatos.h"
 #include <iostream>
 #include <fstream>
 using namespace std;

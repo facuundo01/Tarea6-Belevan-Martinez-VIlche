@@ -1,9 +1,9 @@
-#ifndef ENTRADA_SALIDA_H
-#define ENTRADA_SALIDA_H
+#pragma once
 
 #include <vector>
-using namespace std;
+#include <string>
 
-void guardarResultados(const vector<int> &soluciones, const string &archivo);
 
-#endif
+void guardarResultados(const std::vector<int> &soluciones, const std::string &archivo);
+
+

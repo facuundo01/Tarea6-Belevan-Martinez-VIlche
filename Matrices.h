@@ -12,9 +12,9 @@ void multiplicarFilaPorEscalar(vector<vector<int>>& matriz, int fila, int escala
 
 void restarFilas(std::vector<std::vector<int>>& mat, int filaPivote, int filaObjetivo, int factor, int columnas);
 
-double determinanteSarrus(const vector<vector<int>> &matriz);
-double determinanteLaplace(const vector<vector<int>> &matriz); // recursivo
-vector<vector<double>> menorMatriz(const vector<vector<int>> &matriz, int fila, int col);
+int DeterminanteSarrus(const vector<vector<int>> &matriz);
+int DeterminanteLaplace(const vector<vector<int>> &matriz); // recursivo
+vector<vector<int>> menorMatriz(const vector<vector<int>> &matriz, int fila, int col);
 
 
 

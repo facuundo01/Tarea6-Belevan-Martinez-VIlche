@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
-#include "matrices.h"
+#include "Matrices.h"
 #include "ResDeSist.h"
+#include "InDatos.h"
 
 using namespace std;
 
@@ -19,20 +20,20 @@ int main() {
     cout << "Ingrese terminos independientes:\n";
     for (int i = 0; i < n; i++) cin >> b[i];
 
-    double det = 0;
+    int det = 0;
     if (n == 3) {
-        det = determinanteSarrus(matriz);
+        det = DeterminanteSarrus(A);
         cout << "Determinante (Sarrus): " << det << endl;
     } else if (n > 3) {
-        det = determinanteLaplace(matriz);
+        det = DeterminanteLaplace(A);
         cout << "Determinante (Laplace): " << det << endl;
     } else if (n == 2) {
-        det = matriz[0][0]*matriz[1][1] - matriz[0][1]*matriz[1][0];
+        det = A[0][0]*A[1][1] - A[0][1]*A[1][0];
         cout << "Determinante (2x2): " << det << endl;
     }
 
     if (det == 0) {
-        cout << "El sistema no tiene solución única.\n";
+        cout << "El sistema no tiene solucion unica.\n";
         return 0;
     }
 

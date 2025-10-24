@@ -37,7 +37,7 @@ void restarFilas(std::vector<std::vector<int>>& mat, int filaPivote, int filaObj
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int determinanteSarrus(const vector<vector<int>> &matriz) {
+int DeterminanteSarrus(const vector<vector<int>> &matriz) {
     if (matriz.size() != 3) return 0; // seguridad
     int det = 0;
     det = matriz[0][0]*matriz[1][1]*matriz[2][2] +
@@ -66,14 +66,14 @@ vector<vector<int>> menorMatriz(const vector<vector<int>> &matriz, int fila, int
     return menor;
 }
 
-int determinanteLaplace(const vector<vector<int>> &matriz) {
+int DeterminanteLaplace(const vector<vector<int>> &matriz) {
     int n = matriz.size();
     if (n == 1) return matriz[0][0];
     if (n == 2) return matriz[0][0]*matriz[1][1] - matriz[0][1]*matriz[1][0];
     int det = 0;
     for (int j = 0; j < n; j++) {
         vector<vector<int>> menor = menorMatriz(matriz, 0, j);
-        det += ( (j%2==0 ? 1 : -1) * matriz[0][j] * determinanteLaplace(menor) );
+        det += ( (j%2==0 ? 1 : -1) * matriz[0][j] * DeterminanteLaplace(menor) );
     }
     return det;
 }
