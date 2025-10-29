@@ -3,89 +3,97 @@
 
 #include <iostream>
 #include <vector>
-#include <cstdlib>   // para abs()
+#include <cstdlib>  // para abs()
+#include <stdexcept>
 #include "matrices.h"
 #include "ResDeSist.h"
 
 using namespace std;
 
-vector<int> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
-    int n = A.size();
-    int columnas = n + 1;
+vector<double> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
+    try {
+        int n = A.size();
+        int columnas = n + 1;
 
-    // Crear matriz aumentada [A | b]
-    vector<vector<int>> mat(n, vector<int>(columnas));
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            mat[i][j] = A[i][j];
+        // Crear matriz aumentada [A | b]
+        vector<vector<int>> mat(n, vector<int>(columnas));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                mat[i][j] = A[i][j];
+            }
+            mat[i][n] = b[i];
         }
-        mat[i][n] = b[i];
-    }
 
-    cout << "\n--- Matriz aumentada inicial ---\n";
-    mostrarMatriz(mat, n, columnas);
+        cout << "\n--- Matriz aumentada inicial ---\n";
+        mostrarMatriz(mat, n, columnas);
 
-    // Proceso de Gauss-Jordan
-    for (int i = 0; i < n; i++) {
-        int pivote = mat[i][i];
+        // Proceso de Gauss-Jordan
+        for (int i = 0; i < n; i++) {
+            int pivote = mat[i][i];
 
-        // Si el pivote es 0, buscar otra fila para intercambiar
-        if (pivote == 0) {
-            bool intercambio = false;
-            for (int k = i + 1; k < n; k++) {
-                if (mat[k][i] != 0) {
-                    intercambiarFilas(mat, i, k, columnas);
-                    pivote = mat[i][i];
-                    cout << "Intercambio fila " << i + 1 << " con fila " << k + 1 << endl;
-                    mostrarMatriz(mat, n, columnas);
-                    intercambio = true;
-                    break;
+            // Si el pivote es 0, buscar otra fila para intercambiar
+            if (pivote == 0) {
+                bool intercambio = false;
+                for (int k = i + 1; k < n; k++) {
+                    if (mat[k][i] != 0) {
+                        intercambiarFilas(mat, i, k, columnas);
+                        pivote = mat[i][i];
+                        cout << "Intercambio fila " << i + 1 << " con fila " << k + 1 << endl;
+                        mostrarMatriz(mat, n, columnas);
+                        intercambio = true;
+                        break;
+                    }
+                }
+                if (!intercambio) {
+                    throw runtime_error("No se encontró pivote no nulo. El sistema puede no tener solución.");
+                    return {};
                 }
             }
-            if (!intercambio) {
-                cout << "No se encontró pivote no nulo. El sistema puede no tener solución." << endl;
-                return {};
+
+            // Normalizar la fila pivote para hacer que el pivote sea 1 (solo si divisible)
+            if (pivote != 1) {
+                if (mat[i][i] % pivote == 0) {
+                    multiplicarFilaPorEscalar(mat, i, 1 / pivote, columnas);
+                }
+                else {
+                    cout << "Atención: división entera, puede perder precisión.\n";
+                }
             }
+
+            cout << "Fila " << i + 1 << " normalizada:" << endl;
+            mostrarMatriz(mat, n, columnas);
+
+            // Hacer ceros en la columna del pivote
+            for (int k = 0; k < n; k++) {
+                if (k != i) {
+                    int factor = mat[k][i];
+                    if (factor != 0)
+                        restarFilas(mat, i, k, factor, columnas);
+                }
+            }
+
+            cout << "Después de eliminar columna " << i + 1 << ":" << endl;
+            mostrarMatriz(mat, n, columnas);
         }
 
-        // Normalizar la fila pivote para hacer que el pivote sea 1 (solo si divisible)
-        if (pivote != 1) {
-            if (mat[i][i] % pivote == 0) {
-                multiplicarFilaPorEscalar(mat, i, 1 / pivote, columnas);
-            }
-            else {
-                cout << "Atención: división entera, puede perder precisión.\n";
-            }
+        // Extraer las soluciones
+        int n;
+        vector<int> soluciones(n);
+        for (int i = 0; i < n; i++) {
+            soluciones[i] = mat[i][n];
         }
 
-        cout << "Fila " << i + 1 << " normalizada:" << endl;
-        mostrarMatriz(mat, n, columnas);
-
-        // Hacer ceros en la columna del pivote
-        for (int k = 0; k < n; k++) {
-            if (k != i) {
-                int factor = mat[k][i];
-                if (factor != 0)
-                    restarFilas(mat, i, k, factor, columnas);
-            }
+        cout << "--- Soluciones ---" << endl;
+        for (int i = 0; i < n; i++) {
+            cout << "x" << i + 1 << " = " << soluciones[i] << endl;
         }
 
-        cout << "Después de eliminar columna " << i + 1 << ":" << endl;
-        mostrarMatriz(mat, n, columnas);
+        return soluciones;
     }
-
-    // Extraer las soluciones
-    vector<int> soluciones(n);
-    for (int i = 0; i < n; i++) {
-        soluciones[i] = mat[i][n];
+    catch (runtime_error& e) {
+        cerr << "Se produjo un error: " << e.what() << endl;
+        return{};
     }
-
-    cout << "--- Soluciones ---" << endl;
-    for (int i = 0; i < n; i++) {
-        cout << "x" << i + 1 << " = " << soluciones[i] << endl;
-    }
-
-    return soluciones;
 }
 
 
