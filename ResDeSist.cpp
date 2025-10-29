@@ -10,13 +10,12 @@
 
 using namespace std;
 
-vector<double> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
+vector<double> resolverPorGaussJordan(vector<vector<double>> A, vector<double> b) {
     try {
         int n = A.size();
         int columnas = n + 1;
-
         // Crear matriz aumentada [A | b]
-        vector<vector<int>> mat(n, vector<int>(columnas));
+        vector<vector<double>> mat(n, vector<double>(columnas));
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 mat[i][j] = A[i][j];
@@ -29,7 +28,7 @@ vector<double> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
 
         // Proceso de Gauss-Jordan
         for (int i = 0; i < n; i++) {
-            int pivote = mat[i][i];
+            double pivote = mat[i][i];
 
             // Si el pivote es 0, buscar otra fila para intercambiar
             if (pivote == 0) {
@@ -45,19 +44,13 @@ vector<double> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
                     }
                 }
                 if (!intercambio) {
-                    throw runtime_error("No se encontró pivote no nulo. El sistema puede no tener solución.");
-                    return {};
+                    continue; // No se puede continuar con este pivote
                 }
             }
 
             // Normalizar la fila pivote para hacer que el pivote sea 1 (solo si divisible)
-            if (pivote != 1) {
-                if (mat[i][i] % pivote == 0) {
-                    multiplicarFilaPorEscalar(mat, i, 1 / pivote, columnas);
-                }
-                else {
-                    cout << "Atención: división entera, puede perder precisión.\n";
-                }
+            if (pivote != 1.0) {
+                multiplicarFilaPorEscalar(mat, i, 1.0 / pivote, columnas);
             }
 
             cout << "Fila " << i + 1 << " normalizada:" << endl;
@@ -66,7 +59,7 @@ vector<double> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
             // Hacer ceros en la columna del pivote
             for (int k = 0; k < n; k++) {
                 if (k != i) {
-                    int factor = mat[k][i];
+                    double factor = mat[k][i];
                     if (factor != 0)
                         restarFilas(mat, i, k, factor, columnas);
                 }
@@ -76,9 +69,27 @@ vector<double> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
             mostrarMatriz(mat, n, columnas);
         }
 
-        // Extraer las soluciones
-        int n;
-        vector<int> soluciones(n);
+        // Comprobar filas para detectar sistemas incompatibles o infinitas soluciones
+        for (int i = 0; i < n; i++) {
+            bool filaCero = true;
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] != 0) {
+                    filaCero = false;
+                    break;
+                }
+            }
+
+            if (filaCero && mat[i][n] != 0) {
+                throw runtime_error("El sistema no tiene solucion unica.");
+            }
+
+            if (filaCero && mat[i][n] == 0) {
+                throw runtime_error("El sistema tiene infinitas soluciones.");
+            }
+        }
+
+        // Extraer las soluciones (cada variable está en la última columna)
+        vector<double> soluciones(n);
         for (int i = 0; i < n; i++) {
             soluciones[i] = mat[i][n];
         }
@@ -92,8 +103,6 @@ vector<double> resolverPorGaussJordan(vector<vector<int>> A, vector<int> b) {
     }
     catch (runtime_error& e) {
         cerr << "Se produjo un error: " << e.what() << endl;
-        return{};
+        return {};
     }
 }
-
-

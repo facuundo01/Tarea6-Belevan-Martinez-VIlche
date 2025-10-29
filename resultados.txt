@@ -1,5 +1,31 @@
 Soluciones del sistema:
+No se encontraron soluciones (Posiblemente infinitas o sin solucion).
+-------------------------
+Soluciones del sistema:
+x1 = 1.2967
+x2 = -0.0659341
+x3 = 3.08791
+-------------------------
+
+Soluciones del sistema 1:
+x1 = -0.914286
+x2 = 1.85714
+x3 = 2.4
+-------------------------
+
+Soluciones del sistema 1:
 x1 = 0
-x2 = 0
-x3 = 3
-x4 = 0
+x2 = 1
+-------------------------
+
+Soluciones del sistema 1:
+x1 = -0.0525292
+x2 = 1.55058
+-------------------------
+No se encontraron soluciones (Posiblemente infinitas o sin solucion).
+-------------------------
+
+Soluciones del sistema 3:
+x1 = -1.5
+x2 = 3.25
+-------------------------
